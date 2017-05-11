@@ -1,11 +1,18 @@
-require "spec_helper"
+require 'spec_helper'
 
-RSpec.describe Converter::Money do
-  it "has a version number" do
-    expect(Converter::Money::VERSION).not_to be nil
-  end
+describe Converter::Money do
+  describe '.conversion_rates' do
+    it 'sets configuration for conversion rates' do
+      Converter::Money.conversion_rates('NGN', {
+        'USD' => 0.0031,
+        'EUR' => 0.0029
+      })
 
-  it "does something useful" do
-    expect(false).to eq(true)
+      expect(Converter::Money.base_currency).to eq('NGN')
+      expect(Converter::Money.other_currencies).to eq({
+        'USD' => 0.0031,
+        'EUR' => 0.0029
+      })
+    end
   end
 end
