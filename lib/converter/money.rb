@@ -22,6 +22,10 @@ module Converter
       "#{formatted_amount} #{currency}"
     end
 
+    def convert_to(new_currency)
+      currency == new_currency ? self : Money.new(amount * Money.other_currencies[new_currency], new_currency)
+    end
+
   private
 
     def formatted_amount
