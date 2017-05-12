@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 describe Converter::Money do
-  let(:money) { Converter::Money.new(50000, 'NGN') }
+  let(:money) { Converter::Money.new(50, 'EUR') }
 
   before(:all) do
-    Converter::Money.conversion_rates('NGN', {
-      'USD' => 0.0031,
-      'EUR' => 0.0029
+    Converter::Money.conversion_rates('EUR', {
+      'USD' => 1.11,
+      'Bitcoin' => 0.0047
     })
   end
 
   describe '.conversion_rates' do
     it 'sets configuration for conversion rates' do
-      expect(Converter::Money.base_currency).to eq('NGN')
+      expect(Converter::Money.base_currency).to eq('EUR')
       expect(Converter::Money.other_currencies).to eq({
-        'USD' => 0.0031,
-        'EUR' => 0.0029
+        'USD' => 1.11,
+        'Bitcoin' => 0.0047
       })
     end
   end
@@ -25,43 +25,43 @@ describe Converter::Money do
   end
 
   describe '#amount' do
-    it { expect(money.amount).to eq(50000) }
+    it { expect(money.amount).to eq(50) }
   end
 
   describe '#currency' do
-    it { expect(money.currency).to eq('NGN') }
+    it { expect(money.currency).to eq('EUR') }
   end
 
   describe '#inspect' do
-    it { expect(money.inspect).to eq('50000.00 NGN') }
+    it { expect(money.inspect).to eq('50.00 EUR') }
   end
 
   describe '#convert_to' do
-    let(:eur_money) { money.convert_to('EUR') }
     let(:usd_money) { money.convert_to('USD') }
-    let(:same_money) { money.convert_to('NGN') }
+    let(:bitcoin_money) { money.convert_to('Bitcoin') }
+    let(:same_money) { money.convert_to('EUR') }
 
     it 'returns instances of Converter::Money' do
-      expect(eur_money).to be_an_instance_of Converter::Money
       expect(usd_money).to be_an_instance_of Converter::Money
+      expect(bitcoin_money).to be_an_instance_of Converter::Money
       expect(same_money).to be_an_instance_of Converter::Money
     end
 
     context 'conversion from base currency to other currencies' do
-      it { expect(eur_money.inspect).to eq('145.00 EUR') }
-      it { expect(usd_money.inspect).to eq('155.00 USD') }
+      it { expect(usd_money.inspect).to eq('55.50 USD') }
+      it { expect(bitcoin_money.inspect).to eq('0.24 Bitcoin') }
     end
 
     context 'conversion to the same currency' do
       it 'returns same objects' do
-        expect(money.convert_to('NGN')).to equal(money)
-        expect(eur_money.convert_to('EUR')).to equal(eur_money)
+        expect(money.convert_to('EUR')).to equal(money)
         expect(usd_money.convert_to('USD')).to equal(usd_money)
+        expect(bitcoin_money.convert_to('Bitcoin')).to equal(bitcoin_money)
       end
 
-      it { expect(money.convert_to('NGN').inspect).to eq('50000.00 NGN') }
-      it { expect(eur_money.convert_to('EUR').inspect).to eq('145.00 EUR') }
-      it { expect(usd_money.convert_to('USD').inspect).to eq('155.00 USD') }
+      it { expect(money.convert_to('EUR').inspect).to eq('50.00 EUR') }
+      it { expect(usd_money.convert_to('USD').inspect).to eq('55.50 USD') }
+      it { expect(bitcoin_money.convert_to('Bitcoin').inspect).to eq('0.24 Bitcoin') }
     end
   end
 end
