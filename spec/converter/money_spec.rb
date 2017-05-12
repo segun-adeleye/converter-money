@@ -78,6 +78,11 @@ module Converter
       context '#convert_to' do
         it { expect { money.convert_to('NGN') }.to raise_error(ArgumentError, 'Invalid Currency: currency does not exist in configuration') }
       end
+
+      context '.conversion_rates' do
+        it { expect { Money.conversion_rates('EUR', {}) }.to raise_error(ArgumentError, 'Empty hash') }
+        it { expect { Money.conversion_rates('EUR', 300) }.to raise_error(ArgumentError, 'Invalid Options: options must be a hash') }
+      end
     end
   end
 end

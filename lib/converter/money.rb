@@ -12,6 +12,7 @@ module Converter
     attr_reader :amount, :currency
 
     def self.conversion_rates(base_currency, other_currencies)
+      validate_conversion_rates(base_currency, other_currencies)
       @base_currency = base_currency
       @other_currencies = other_currencies
     end
