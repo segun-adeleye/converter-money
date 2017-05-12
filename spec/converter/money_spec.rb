@@ -65,5 +65,19 @@ module Converter
         it { expect(bitcoin_money.convert_to('Bitcoin').inspect).to eq('0.24 Bitcoin') }
       end
     end
+
+    describe 'validations' do
+      context '#initialize' do
+        let(:invalid_money_1) { Money.new('50', 'EUR') }
+        let(:invalid_money_2) { Money.new(50, 'NGN') }
+
+        it { expect{ invalid_money_1 }.to raise_error(ArgumentError, 'Invalid Amount: amount must be a number') }
+        it { expect{ invalid_money_2 }.to raise_error(ArgumentError, 'Invalid Currency: currency does not exist in configuration') }
+      end
+
+      context '#convert_to' do
+        it { expect { money.convert_to('NGN') }.to raise_error(ArgumentError, 'Invalid Currency: currency does not exist in configuration') }
+      end
+    end
   end
 end

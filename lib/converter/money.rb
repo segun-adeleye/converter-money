@@ -1,7 +1,10 @@
 require "converter/money/version"
+require "converter/money/validator"
 
 module Converter
   class Money
+    include Validator
+
     class << self
       attr_reader :base_currency, :other_currencies
     end
@@ -14,6 +17,7 @@ module Converter
     end
 
     def initialize(amount, currency)
+      validate(amount, currency)
       @amount = amount
       @currency = currency
     end
@@ -23,6 +27,7 @@ module Converter
     end
 
     def convert_to(new_currency)
+      validate_currency(new_currency)
       currency == new_currency ? self : Money.new(amount * Money.other_currencies[new_currency], new_currency)
     end
 
