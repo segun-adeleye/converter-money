@@ -17,5 +17,15 @@ module Converter
       @amount = amount
       @currency = currency
     end
+
+    def inspect
+      "#{formatted_amount} #{currency}"
+    end
+
+  private
+
+    def formatted_amount
+      "%.2f" % amount.round(2)
+    end
   end
 end

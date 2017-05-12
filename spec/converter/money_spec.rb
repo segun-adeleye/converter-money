@@ -29,4 +29,8 @@ describe Converter::Money do
   describe '#currency' do
     it { expect(money.currency).to eq('NGN') }
   end
+
+  describe '#inspect' do
+    it { expect(money.inspect).to eq('50000.00 NGN') }
+  end
 end
