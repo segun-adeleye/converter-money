@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Converter::Money do
+  let(:money) { Converter::Money.new(50000, 'NGN') }
+
   describe '.conversion_rates' do
     it 'sets configuration for conversion rates' do
       Converter::Money.conversion_rates('NGN', {
@@ -14,5 +16,17 @@ describe Converter::Money do
         'EUR' => 0.0029
       })
     end
+  end
+
+  describe '#initialize' do
+    it { expect(money).to be_an_instance_of Converter::Money }
+  end
+
+  describe '#amount' do
+    it { expect(money.amount).to eq(50000) }
+  end
+
+  describe '#currency' do
+    it { expect(money.currency).to eq('NGN') }
   end
 end
