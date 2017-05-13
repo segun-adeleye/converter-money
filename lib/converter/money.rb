@@ -1,10 +1,12 @@
 require "converter/money/version"
 require "converter/money/validator"
+require "converter/money/operators"
 require "converter/money/exceptions"
 
 module Converter
   class Money
     include Validator
+    include Operators
 
     class << self
       attr_reader :base_currency, :other_currencies

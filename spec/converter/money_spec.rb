@@ -114,6 +114,23 @@ module Converter
           it { expect { money.convert_to('NGN') }.to raise_error(ArgumentError, 'Invalid Currency: currency does not exist in configuration') }
         end
       end
+
+      describe 'arithmetic operations' do
+        let(:fifty_eur)       { Money.new(50, 'EUR') }
+        let(:twenty_eur)      { Money.new(20, 'EUR') }
+        let(:twenty_dollars)  { Money.new(20, 'USD') }
+        let(:two_bitcoins)    { Money.new(2, 'Bitcoin') }
+
+        it { expect(fifty_eur + twenty_dollars).to eq '68.02 EUR' }
+        it { expect(twenty_dollars + fifty_eur).to eq '75.50 USD' }
+        it { expect(twenty_eur + twenty_eur).to eq '40 EUR' }
+        it { expect(two_bitcoins + twenty_eur).to eq '2.09 Bitcoin' }
+        it { expect(two_bitcoins - twenty_eur).to eq '1.91 Bitcoin' }
+        it { expect(fifty_eur - twenty_dollars).to eq '31.98 EUR' }
+        it { expect(fifty_eur - twenty_eur).to eq '30 EUR' }
+        it { expect(fifty_eur / 2).to eq '25 EUR' }
+        it { expect(twenty_dollars * 3 ).to eq '60 USD' }
+      end
     end
 
   end
