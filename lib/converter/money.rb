@@ -1,5 +1,6 @@
 require "converter/money/version"
 require "converter/money/validator"
+require "converter/money/exceptions"
 
 module Converter
   class Money
@@ -18,6 +19,10 @@ module Converter
     end
 
     def initialize(amount, currency)
+      unless Money.base_currency && Money.other_currencies
+        raise ConfigurationError, 'Configuration for conversion_rates is required'
+      end
+
       validate(amount, currency)
       @amount = amount
       @currency = currency

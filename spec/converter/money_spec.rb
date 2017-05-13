@@ -4,11 +4,28 @@ module Converter
   describe Money do
 
     describe 'validations' do
+      shared_examples 'unconfigured money' do
+        it { expect(Money.base_currency).to be_nil }
+        it { expect(Money.other_currencies).to be_nil }
+      end
+
       context '.conversion_rates' do
         it { expect { Money.conversion_rates('EUR', {}) }.to raise_error(ArgumentError, 'Empty hash') }
         it { expect { Money.conversion_rates('EUR', 300) }.to raise_error(ArgumentError, 'Invalid Options: options must be a hash') }
-        it { expect(Money.base_currency).to be_nil }
-        it { expect(Money.other_currencies).to be_nil }
+
+        it_should_behave_like 'unconfigured money'
+      end
+
+      context 'when configuration is not set' do
+        describe '#initialize' do
+          it_should_behave_like 'unconfigured money'
+
+          it 'raises ConfigurationError exception' do
+            expect { Money.new(50, 'EUR') }.to raise_error(Money::ConfigurationError)
+            expect(Money.base_currency).to be_nil
+            expect(Money.other_currencies).to be_nil
+          end
+        end
       end
     end
 
