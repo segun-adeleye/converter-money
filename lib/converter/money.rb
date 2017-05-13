@@ -34,13 +34,21 @@ module Converter
 
     def convert_to(new_currency)
       validate_currency(new_currency)
-      currency == new_currency ? self : Money.new(amount * Money.other_currencies[new_currency], new_currency)
+      currency == new_currency ? self : Money.new(calculate_amount_for(new_currency), new_currency)
     end
 
   private
 
     def formatted_amount
       "%.2f" % amount.round(2)
+    end
+
+    def calculate_amount_for(new_currency)
+      if new_currency == Money.base_currency
+        amount / Money.other_currencies[currency]
+      else
+        amount * Money.other_currencies[new_currency]
+      end
     end
   end
 end

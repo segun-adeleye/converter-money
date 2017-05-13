@@ -66,9 +66,11 @@ module Converter
       end
 
       describe '#convert_to' do
-        let(:usd_money) { money.convert_to('USD') }
+        let(:usd_money)     { money.convert_to('USD') }
         let(:bitcoin_money) { money.convert_to('Bitcoin') }
-        let(:same_money) { money.convert_to('EUR') }
+        let(:same_money)    { money.convert_to('EUR') }
+        let(:bitcoin_23)    { Money.new(23, 'Bitcoin') }
+        let(:usd_87)        { Money.new(87, 'USD') }
 
         it 'returns instances of Money' do
           expect(usd_money).to be_an_instance_of Money
@@ -79,6 +81,14 @@ module Converter
         context 'conversion from base currency to other currencies' do
           it { expect(usd_money.inspect).to eq('55.50 USD') }
           it { expect(bitcoin_money.inspect).to eq('0.24 Bitcoin') }
+        end
+
+        context 'conversion from other currencies to base currency' do
+          it { expect(usd_money.convert_to('EUR').inspect).to eq('50.00 EUR') }
+          it { expect(bitcoin_money.convert_to('EUR').inspect).to eq('50.00 EUR') }
+
+          it { expect(usd_87.convert_to('EUR').inspect).to eq('78.38 EUR') }
+          it { expect(bitcoin_23.convert_to('EUR').inspect).to eq('4893.62 EUR') }
         end
 
         context 'conversion to the same currency' do
