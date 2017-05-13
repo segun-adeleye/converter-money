@@ -115,21 +115,35 @@ module Converter
         end
       end
 
-      describe 'arithmetic operations' do
-        let(:fifty_eur)       { Money.new(50, 'EUR') }
-        let(:twenty_eur)      { Money.new(20, 'EUR') }
-        let(:twenty_dollars)  { Money.new(20, 'USD') }
-        let(:two_bitcoins)    { Money.new(2, 'Bitcoin') }
+      describe 'operations' do
+        let(:fifty_eur)           { Money.new(50, 'EUR') }
+        let(:twenty_eur)          { Money.new(20, 'EUR') }
+        let(:twenty_dollars)      { Money.new(20, 'USD') }
+        let(:two_bitcoins)        { Money.new(2, 'Bitcoin') }
 
-        it { expect(fifty_eur + twenty_dollars).to eq '68.02 EUR' }
-        it { expect(twenty_dollars + fifty_eur).to eq '75.50 USD' }
-        it { expect(twenty_eur + twenty_eur).to eq '40 EUR' }
-        it { expect(two_bitcoins + twenty_eur).to eq '2.09 Bitcoin' }
-        it { expect(two_bitcoins - twenty_eur).to eq '1.91 Bitcoin' }
-        it { expect(fifty_eur - twenty_dollars).to eq '31.98 EUR' }
-        it { expect(fifty_eur - twenty_eur).to eq '30 EUR' }
-        it { expect(fifty_eur / 2).to eq '25 EUR' }
-        it { expect(twenty_dollars * 3 ).to eq '60 USD' }
+        let(:fifty_eur_in_usd)    { fifty_eur.convert_to('USD') }
+        let(:two_bitcoins_in_eur) { two_bitcoins.convert_to('EUR') }
+
+        describe 'arithmetics operations' do
+          it { expect(fifty_eur + twenty_dollars).to eq '68.02 EUR' }
+          it { expect(twenty_dollars + fifty_eur).to eq '75.50 USD' }
+          it { expect(twenty_eur + twenty_eur).to eq '40 EUR' }
+          it { expect(two_bitcoins + twenty_eur).to eq '2.09 Bitcoin' }
+          it { expect(two_bitcoins - twenty_eur).to eq '1.91 Bitcoin' }
+          it { expect(fifty_eur - twenty_dollars).to eq '31.98 EUR' }
+          it { expect(fifty_eur - twenty_eur).to eq '30 EUR' }
+          it { expect(fifty_eur / 2).to eq '25 EUR' }
+          it { expect(twenty_dollars * 3 ).to eq '60 USD' }
+        end
+
+        describe 'camparisons operations' do
+          it { expect(twenty_dollars == Money.new(20, 'USD')).to be true }
+          it { expect(twenty_dollars == Money.new(30, 'USD')).to be false }
+          it { expect(fifty_eur_in_usd == fifty_eur).to be true }
+          it { expect(twenty_dollars > Money.new(5, 'USD')).to be true }
+          it { expect(twenty_dollars < fifty_eur).to be true }
+          it { expect(two_bitcoins_in_eur == two_bitcoins).to be true }
+        end
       end
     end
 

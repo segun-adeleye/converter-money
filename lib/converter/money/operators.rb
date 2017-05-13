@@ -6,6 +6,12 @@ module Converter
       end
     end
 
+    [:==, :>, :<].each do |operator|
+      define_method operator do |operand|
+        amount.round(2).send(operator, parse_operand(operand).round(2))
+      end
+    end
+
   private
     def parse_operand(operand)
       operand.is_a?(Money) ? operand.convert_to(currency).amount : operand
