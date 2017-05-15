@@ -46,6 +46,8 @@ module Converter
             'USD' => 1.11,
             'Bitcoin' => 0.0047
           })
+          expect(money.send(:base_currency)).to eq(Money.base_currency)
+          expect(money.send(:other_currencies)).to eq(Money.other_currencies)
         end
       end
 

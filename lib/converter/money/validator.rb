@@ -16,7 +16,7 @@ module Converter
         end
 
         def validate_currency(currency)
-          unless currency == self.class.base_currency || self.class.other_currencies[currency]
+          unless currency == base_currency || other_currencies[currency]
             raise ArgumentError, 'Invalid Currency: currency does not exist in configuration'
           end
         end

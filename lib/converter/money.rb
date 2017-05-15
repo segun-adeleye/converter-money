@@ -21,7 +21,7 @@ module Converter
     end
 
     def initialize(amount, currency)
-      unless Money.base_currency && Money.other_currencies
+      unless base_currency && other_currencies
         raise ConfigurationError, 'Configuration for conversion_rates is required'
       end
 
@@ -36,7 +36,7 @@ module Converter
 
     def convert_to(new_currency)
       validate_currency(new_currency)
-      currency == new_currency ? self : Money.new(calculate_amount_for(new_currency), new_currency)
+      currency == new_currency ? self : self.class.new(calculate_amount_for(new_currency), new_currency)
     end
 
   private
@@ -46,10 +46,16 @@ module Converter
     end
 
     def calculate_amount_for(new_currency)
-      if new_currency == Money.base_currency
-        amount / Money.other_currencies[currency]
+      if new_currency == base_currency
+        amount / other_currencies[currency]
       else
-        amount * Money.other_currencies[new_currency]
+        amount * other_currencies[new_currency]
+      end
+    end
+
+    [:base_currency, :other_currencies].each do |item|
+      define_method item do
+        self.class.send(item)
       end
     end
   end
