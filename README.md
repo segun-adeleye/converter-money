@@ -5,20 +5,26 @@ Converter Money is a Ruby gem that performs currency conversion and arithmetics 
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Install and require the gem:
+```sh
+$ gem install converter-money
+```
+
+```ruby
+require 'conveter/money'
+```
+
+Or add this line to your application's Gemfile:
 
 ```ruby
 gem 'converter-money'
 ```
 
-And then execute:
+And then use Bundler to install it:
 ```sh
 $ bundle install
 ```
-Or install it yourself as:
-```sh
-$ gem install converter-money
-```
+
 ## Usage
 
 __Configure the converstion rates__
