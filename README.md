@@ -1,4 +1,5 @@
 # Converter Money
+[![Gem Version](https://badge.fury.io/rb/converter-money.svg)](https://badge.fury.io/rb/converter-money)
 
 Converter Money is a Ruby gem that performs currency conversion and arithmetics with different currencies.
 
