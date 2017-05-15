@@ -11,7 +11,7 @@ $ gem install converter-money
 ```
 
 ```ruby
-require 'conveter/money'
+require 'converter/money'
 ```
 
 Or add this line to your application's Gemfile:
